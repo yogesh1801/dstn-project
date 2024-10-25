@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+message WeatherData {
+    string formatted_date = 1;         // e.g., "2006-04-01 00:00:00.000 +0200"
+    string summary = 2;                // e.g., "Partly Cloudy"
+    string precip_type = 3;            // e.g., "rain"
+    float temperature_c = 4;           // Temperature in Celsius
+    float wind_speed_kmh = 5;          // Wind speed in km/h
+    float pressure_mb = 6;             // Atmospheric pressure in millibars
+    float humidity = 7;                // Humidity level as a decimal (0.0 - 1.0)
+}
