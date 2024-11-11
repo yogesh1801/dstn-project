@@ -6,6 +6,6 @@ message WeatherData {
     string precip_type = 3;            // e.g., "rain"
     float temperature_c = 4;           // Temperature in Celsius
     float wind_speed_kmh = 5;          // Wind speed in km/h
-    float pressure_mb = 6;             // Atmospheric pressure in millibars
-    float humidity = 7;                // Humidity level as a decimal (0.0 - 1.0)
+    double pressure_mb = 6;             // Atmospheric pressure in millibars
+    double humidity = 7;                // Humidity level as a decimal (0.0 - 1.0)
 }
