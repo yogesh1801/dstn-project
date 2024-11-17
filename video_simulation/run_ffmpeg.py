@@ -1,6 +1,5 @@
 import logging
 import os
-import uuid
 import subprocess
 from config import conf
 from utility.get_ffmpeg_cmd import get_ffmpeg_cmd
@@ -10,6 +9,7 @@ logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
+
 
 def run_ffmpeg():
     temp_dir = conf.OUTPUT_DIR
@@ -29,7 +29,7 @@ def run_ffmpeg():
             ffmpeg_cmd,
             stdout=None,  # Use parent stdout
             stderr=None,  # Use parent stderr
-            text=True  # Ensures proper text handling
+            text=True,  # Ensures proper text handling
         )
 
         process.wait()  # Wait for the process to complete
@@ -40,6 +40,7 @@ def run_ffmpeg():
             logger.error(f"FFmpeg failed with return code {process.returncode}.")
     except Exception as e:
         logger.error(f"Error while running FFmpeg: {e}")
+
 
 if __name__ == "__main__":
     run_ffmpeg()
