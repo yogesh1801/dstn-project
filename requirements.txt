@@ -1,0 +1,5 @@
+kafka-python==2.0.2
+lz4==4.3.3
+protobuf==5.28.3
+ruff==0.7.3
+zstandard==0.23.0

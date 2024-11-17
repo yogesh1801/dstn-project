@@ -1,4 +1,4 @@
-version: '3.8'  # You can specify the latest version of your Docker Compose
+version: '3.8'
 
 services:
   zookeeper:
@@ -23,3 +23,14 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      
+      # Only essential configs for large messages
+      KAFKA_MESSAGE_MAX_BYTES: 20971520  # 20MB
+      KAFKA_MAX_REQUEST_SIZE: 20971520   # 20MB
+      KAFKA_SOCKET_REQUEST_MAX_BYTES: 20971520  # 20MB
+
+    volumes:
+      - ./kafka-data:/var/lib/kafka/data    # Simple local directory mapping
+
+volumes:
+  kafka-data:

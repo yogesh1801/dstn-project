@@ -3,3 +3,6 @@ __pycache__
 .venv
 *.csv
 *.ruff_cache
+*.mkv
+temp
+kafka-data
