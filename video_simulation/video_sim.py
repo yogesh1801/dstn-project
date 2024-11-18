@@ -54,7 +54,7 @@ def process_video_data():
             logger.info(f"Sent segment {segment_number} " f"({len(segment_data) / 1024:.2f} KB)")
 
             processed_segments.add(segment_number)
-            #os.remove(segment_path)
+            os.remove(segment_path)
 
         time.sleep(0.1)
 
