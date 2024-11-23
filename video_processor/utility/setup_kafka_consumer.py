@@ -1,5 +1,3 @@
-# utils/kafka.py
-
 from typing import List
 from kafka import KafkaConsumer
 
