@@ -6,3 +6,10 @@ __pycache__
 *.mkv
 temp
 kafka-data
+360p
+480p
+720p
+1080p
+input
+target
+lib
