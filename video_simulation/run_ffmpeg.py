@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 def run_ffmpeg():
     temp_dir = conf.OUTPUT_DIR
     logger.info(f"Creating temp dir: {temp_dir}")
-    shutil.rmtree(temp_dir)
+    shutil.rmtree(temp_dir, ignore_errors=True)
     os.makedirs(temp_dir, exist_ok=True)
 
     input_source = conf.INPUT_VIDEO_SOURCE

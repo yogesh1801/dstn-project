@@ -45,7 +45,7 @@ def process_video_data():
 
             key = str(segment_number).encode("utf-8")
             value = zlib.compress(segment_data, level=6)
-
+            
             future = producer.send(conf.KAFKA_TOPIC, key=key, value=value)
             future.get(timeout=conf.KAFKA_TIMEOUT)
 

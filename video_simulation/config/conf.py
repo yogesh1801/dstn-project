@@ -23,7 +23,7 @@ OUTPUT_DIR = "temp"
 
 # ------------------------------FFMPEG CONFIG----------------------------------#
 
-SEGMENT_DURATION = 1
+SEGMENT_DURATION = 5
 INPUT_FORMAT = "None"
 FRAMERATE = 30
 RESOLUTION = "1280x720"
