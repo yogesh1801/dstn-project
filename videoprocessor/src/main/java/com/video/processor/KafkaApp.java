@@ -20,7 +20,7 @@ public class KafkaApp {
 
     public static class SegmentWriter implements MapFunction<Tuple2<String, byte[]>, Tuple2<String, byte[]>> {
         private final String outputDir;
-        private static final int BUFFER_SIZE = 5242880;
+        private static final int BUFFER_SIZE = 4242880;
         
         public SegmentWriter(String outputDir) {
             this.outputDir = outputDir;
@@ -53,7 +53,7 @@ public class KafkaApp {
             if (key != null && compressedValue != null && compressedValue.length > 0) {
                 try {
                     byte[] decompressedValue = decompress(compressedValue);
-                    String filename = String.format("%s/segment_%s.ts", outputDir, key);
+                    String filename = String.format("%s/%s.ts", outputDir, key);
                     Path filePath = Paths.get(filename);
                     
                     Files.write(filePath, decompressedValue);
