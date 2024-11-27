@@ -1,1 +1,1 @@
-INPUT_DIR="input"
+INPUT_DIR = "input"

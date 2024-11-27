@@ -2,8 +2,6 @@ import logging
 import os
 from config import conf
 from utility.get_kafka_producer import get_kafka_producer
-import time
-import re
 import zlib
 
 logging.basicConfig(
@@ -46,7 +44,8 @@ def process_video_data():
             future.get(timeout=conf.KAFKA_TIMEOUT)
 
             logger.info(
-                f"Sent segment {segment_base_name} " f"({len(segment_data) / (1024*1024):.2f} MB)"
+                f"Sent segment {segment_base_name} "
+                f"({len(segment_data) / (1024*1024):.2f} MB)"
             )
 
             processed_segments.add(segment_base_name)

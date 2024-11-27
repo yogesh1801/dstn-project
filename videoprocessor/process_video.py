@@ -10,7 +10,6 @@ import time
 
 logger = logging.getLogger(__name__)
 
-# Define quality profiles
 QUALITY_PROFILES = [
     {"name": "1080p", "bitrate": "5000k", "resolution": "1920:1080"},
     {"name": "720p", "bitrate": "2500k", "resolution": "1280:720"},
@@ -26,7 +25,6 @@ def setup_directories(base_dir: str) -> Dict[str, str]:
         for profile in QUALITY_PROFILES
     }
 
-    # Clean and recreate directories
     for dir_path in profile_dirs.values():
         shutil.rmtree(dir_path, ignore_errors=True)
         os.makedirs(dir_path, exist_ok=True)
@@ -60,18 +58,18 @@ def process_segment(
     """Process a video segment into multiple quality profiles using multithreading."""
     try:
         with ThreadPoolExecutor(max_workers=len(QUALITY_PROFILES)) as executor:
-            # Submit all quality profile tasks
             futures = [
                 executor.submit(
-                    transcode_segment, directories, segment_filename, segment_path, profile
+                    transcode_segment,
+                    directories,
+                    segment_filename,
+                    segment_path,
+                    profile,
                 )
                 for profile in QUALITY_PROFILES
             ]
-
-            # Wait for all threads to complete
             wait(futures, return_when=ALL_COMPLETED)
 
-        # Delete the original segment after all profiles are processed
         os.remove(segment_path)
         logger.info(f"Deleted original segment: {segment_path}")
 
@@ -93,17 +91,13 @@ def run_processor(base_dir: str, segment_dir: str) -> None:
     directories = setup_directories(base_dir)
     logger.info("Starting video processor...")
 
-    # Continuous running process to check and process segments
     while True:
         logger.info("Checking for new video segments...")
-        # Check if there are any new segments
         if any(f.endswith(".ts") for f in os.listdir(segment_dir)):
             process_directory(segment_dir, directories)
         else:
             logger.info("No new segments found. Waiting for new segments.")
-
-        # Wait before checking again (adjust as needed)
-        time.sleep(5)
+        time.sleep(1)
 
 
 def main() -> None:
@@ -112,8 +106,8 @@ def main() -> None:
     segment_directory = str(conf.INPUT_DIR)
 
     run_processor(
-        base_dir=".",  # Directory for storing transcoded files
-        segment_dir=segment_directory,  # Directory containing the input video segments
+        base_dir=".",
+        segment_dir=segment_directory,
     )
 
 

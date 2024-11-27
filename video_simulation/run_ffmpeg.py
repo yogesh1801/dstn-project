@@ -30,9 +30,9 @@ def run_ffmpeg():
     try:
         process = subprocess.Popen(
             ffmpeg_cmd,
-            stdout=None,  
-            stderr=None,  
-            text=True,  
+            stdout=None,
+            stderr=None,
+            text=True,
         )
 
         process.wait()
