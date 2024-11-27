@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e # Stop on any error
 
 # Function to check if any containers are running
 if [ -n "$(sudo docker ps -q)" ]; then
@@ -29,9 +28,8 @@ for resolution in 1080p 720p 480p 360p; do
     echo "Setting up topic: $resolution"
     # Delete topic if exists (suppress error if topic doesn't exist)
     sudo docker compose -f docker-compose.kafka.yml exec broker \
-        kafka-topics --delete --topic $resolution --bootstrap-server localhost:9092 --if-exists || true
-    
-    # Create new topic
+        kafka-topics --delete --topic $resolution --bootstrap-server localhost:9092
+    sleep 2
     sudo docker compose -f docker-compose.kafka.yml exec broker \
         kafka-topics --create --topic $resolution --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1
 done

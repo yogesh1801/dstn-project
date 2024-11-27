@@ -45,7 +45,7 @@ def publish_video_segment(folder, topic):
                                     f"Published {filename} to topic {topic} with key {segment_name}"
                                 )
 
-                                os.remove(file_path)
+                                #os.remove(file_path)
                                 logger.info(f"Deleted file: {filename}")
 
                         except Exception as e:
