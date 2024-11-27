@@ -80,7 +80,7 @@ public class KafkaApp {
     public static void main(String[] args) throws Exception {
         LOG.info("Starting Kafka Application with Zlib decompression...");
         
-        String outputDir = args.length > 0 ? args[0] : "1080p";
+        String outputDir = args.length > 0 ? args[0] : "input";
         String bootstrapServers = args.length > 1 ? args[1] : "192.168.1.114:9092";
         String topic = args.length > 2 ? args[2] : "raw-video-data";
         

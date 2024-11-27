@@ -5,6 +5,7 @@ from utility.build_ffmpeg_command import build_ffmpeg_command
 import subprocess
 from config import conf
 from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED
+import shutil
 
 logger = logging.getLogger(__name__)
 
@@ -26,6 +27,7 @@ def setup_directories(base_dir: str) -> Dict[str, str]:
 
     # Clean and recreate directories
     for dir_path in profile_dirs.values():
+        shutil.rmtree(dir_path, ignore_errors=True)
         os.makedirs(dir_path, exist_ok=True)
 
     return profile_dirs
