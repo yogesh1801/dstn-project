@@ -89,8 +89,8 @@ def main() -> None:
     segment_directory = str(conf.INPUT_DIR)
 
     run_processor(
-        base_dir=".",  # Directory for storing transcoded files
-        segment_dir=segment_directory,  # Directory containing the input video segments
+        base_dir=".",
+        segment_dir=segment_directory,
     )
 
 
