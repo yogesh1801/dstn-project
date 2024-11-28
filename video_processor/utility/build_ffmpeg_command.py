@@ -1,5 +1,3 @@
-# utility/ffmpeg_command.py
-
 from typing import Dict, List
 
 
