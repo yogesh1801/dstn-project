@@ -1,6 +1,4 @@
-# backend_storage/KafkaVideoConsumer.py
 from kafka import KafkaConsumer
-
 
 class KafkaVideoConsumer:
     def __init__(self, bootstrap_servers, topic, video_chunk_manager):
