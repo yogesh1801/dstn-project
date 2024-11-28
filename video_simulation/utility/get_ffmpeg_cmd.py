@@ -1,7 +1,7 @@
 from config import conf
 
 
-def get_ffmpeg_cmd(input_source):
+def get_ffmpeg_cmd(input_source, stream_id):
     input_format = conf.INPUT_FORMAT
     framerate = conf.FRAMERATE
     segment_duration = conf.SEGMENT_DURATION
@@ -11,6 +11,8 @@ def get_ffmpeg_cmd(input_source):
     if input_format == "v4l2":
         command = [
             "ffmpeg",
+            "-threads", 
+            "0",
             "-f",
             "v4l2",
             "-framerate",
@@ -39,13 +41,13 @@ def get_ffmpeg_cmd(input_source):
             str(segment_duration),
             "-segment_format",
             "mpegts",
-            "-segment_wrap",
-            "30",  # Reuse segment files after 10 segments
             f"{output_dir}/segment_%d.ts",
         ]
     else:
         command = [
             "ffmpeg",
+            "-threads", 
+            "0",
             "-i",
             input_source,
             "-c:v",
@@ -66,7 +68,7 @@ def get_ffmpeg_cmd(input_source):
             str(segment_duration),
             "-segment_format",
             "mpegts",
-            f"{output_dir}/segment_%d.ts",
+            f"{output_dir}/segment_{stream_id}_%d.ts",
         ]
 
     return command

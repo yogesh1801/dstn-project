@@ -4,6 +4,7 @@ import subprocess
 from config import conf
 from utility.get_ffmpeg_cmd import get_ffmpeg_cmd
 import shutil
+import uuid
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
@@ -20,16 +21,18 @@ def run_ffmpeg():
     input_source = conf.INPUT_VIDEO_SOURCE
     logger.info(f"Starting video capture from {input_source}")
 
-    ffmpeg_cmd = get_ffmpeg_cmd(input_source=input_source)
+    stream_id = uuid.uuid4()
+    logger.info(f"starting stream with stream id {stream_id}")
+
+    ffmpeg_cmd = get_ffmpeg_cmd(input_source=input_source, stream_id=stream_id)
     logger.info(f"Running ffmpeg command: {' '.join(ffmpeg_cmd)}")
 
     try:
-        # Run the ffmpeg command and inherit stdout/stderr from the parent shell
         process = subprocess.Popen(
             ffmpeg_cmd,
-            stdout=None,  # Use parent stdout
-            stderr=None,  # Use parent stderr
-            text=True,  # Ensures proper text handling
+            stdout=None,  
+            stderr=None,  
+            text=True,  
         )
 
         process.wait()  # Wait for the process to complete
