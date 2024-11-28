@@ -56,11 +56,16 @@ def get_ffmpeg_cmd(input_source, stream_id):
             "-i",
             input_source,
             "-map",
-            "0:v:0",
+            "0:v:0",          # Ensure we're getting the video stream
             "-c:v",
-            "libx264",
+            "libx264",        # Use H.264 codec
             "-preset",
-            "ultrafast",
+            "ultrafast",      # Fastest encoding
+            "-copyts",        # Copy timestamps for accurate splitting
+            "-avoid_negative_ts",
+            "make_zero",      # Avoid negative timestamps
+            "-max_muxing_queue_size",
+            "1024",          # Increase muxing queue for large file
             "-tune",
             "zerolatency",
             "-profile:v",
@@ -74,11 +79,11 @@ def get_ffmpeg_cmd(input_source, stream_id):
             "-f",
             "segment",
             "-segment_time",
-            str(segment_duration),
+            str(segment_duration),  # 4 second segments
             "-segment_format",
             "mpegts",
             "-reset_timestamps",
-            "1",
+            "1",            # Reset timestamps at start of each segment
             f"{output_dir}/segment_{stream_id}_%d.ts",
         ]
     
