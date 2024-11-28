@@ -5,13 +5,13 @@ from config import conf
 
 # Configure logging
 logging.basicConfig(
-    level=logging.DEBUG,  # Change to INFO or ERROR based on what level you want to log
+    level=logging.DEBUG,
     format="%(asctime)s - %(levelname)s - %(message)s",
     handlers=[
-        logging.FileHandler("raid_manager.log"),  # Log to a file
-        logging.StreamHandler()  # Also log to console
-    ]
+        logging.StreamHandler(),  # Also log to console
+    ],
 )
+
 
 class RAIDManager:
     def __init__(self, num_vms=conf.NUM_OF_VMS):
@@ -48,7 +48,9 @@ class RAIDManager:
         :param source_path: Path of data to be synced
         :param destination_vms: List of destination VMs
         """
-        self.logger.info(f"Syncing data from {source_path} to {len(destination_vms)} VMs...")
+        self.logger.info(
+            f"Syncing data from {source_path} to {len(destination_vms)} VMs..."
+        )
         try:
             for dest_vm in destination_vms:
                 self.logger.debug(f"Syncing to VM {dest_vm.name}...")
@@ -60,7 +62,7 @@ class RAIDManager:
         except Exception as e:
             self.logger.error(f"Error occurred during data sync: {e}")
 
+
 if __name__ == "__main__":
     raid_manager = RAIDManager()
     raid_manager.create_raid_vms()
-
