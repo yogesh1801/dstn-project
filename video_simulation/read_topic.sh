@@ -1,1 +1,1 @@
-docker-compose exec broker kafka-console-consumer --bootstrap-server localhost:9092 --topic raw-video-data --from-beginning
+docker compose -f docker-compose.kafka.yml exec broker kafka-console-consumer --bootstrap-server localhost:9092 --topic raw-video-data --from-beginning
