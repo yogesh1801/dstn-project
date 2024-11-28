@@ -6,6 +6,7 @@ import subprocess
 from config import conf
 from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED
 import shutil
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -91,7 +92,18 @@ def run_processor(base_dir: str, segment_dir: str) -> None:
     """Main function to run the video processor."""
     directories = setup_directories(base_dir)
     logger.info("Starting video processor...")
-    process_directory(segment_dir, directories)
+
+    # Continuous running process to check and process segments
+    while True:
+        logger.info("Checking for new video segments...")
+        # Check if there are any new segments
+        if any(f.endswith(".ts") for f in os.listdir(segment_dir)):
+            process_directory(segment_dir, directories)
+        else:
+            logger.info("No new segments found. Waiting for new segments.")
+
+        # Wait before checking again (adjust as needed)
+        time.sleep(5)
 
 
 def main() -> None:
