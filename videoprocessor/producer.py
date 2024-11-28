@@ -4,7 +4,7 @@ import time
 import logging
 from utility.get_kafka_producer import get_kafka_producer
 import zlib
-from config.conf import FOLDER_TOPIC_MAPPING, INPUT_DIR
+from config.conf import FOLDER_TOPIC_MAPPING
 
 logging.basicConfig(
     level=logging.INFO,
@@ -23,7 +23,7 @@ def publish_video_segment(folder, topic):
         logger.info(
             f"Starting continuous monitoring of folder: {folder} for topic: {topic}"
         )
-        folder_path = os.path.join(INPUT_DIR, folder)
+        folder_path = folder
 
         while running:
             try:
@@ -68,7 +68,7 @@ def start_publishers():
     threads = []
 
     for folder, topic in FOLDER_TOPIC_MAPPING.items():
-        if os.path.exists(os.path.join(INPUT_DIR, folder)):
+        if os.path.exists(folder):
             logger.info(f"Starting thread for folder: {folder}, topic: {topic}")
             thread = threading.Thread(
                 target=publish_video_segment, args=(folder, topic)

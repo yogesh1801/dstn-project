@@ -94,7 +94,7 @@ public class KafkaApp {
                 .setTopics(topic)
                 .setGroupId("video-processor-group")
                 .setDeserializer(new CustomDeSerializer())
-                .setStartingOffsets(OffsetsInitializer.latest())
+                .setStartingOffsets(OffsetsInitializer.earliest())
                 .build();
 
         env.fromSource(source, 
