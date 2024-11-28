@@ -35,7 +35,7 @@ def run_ffmpeg():
             text=True,  
         )
 
-        process.wait()  # Wait for the process to complete
+        process.wait()
 
         if process.returncode == 0:
             logger.info("FFmpeg command executed successfully.")

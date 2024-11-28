@@ -39,18 +39,18 @@ def process_video_data():
             with open(segment_path, "rb") as f:
                 segment_data = f.read()
 
-            key = segment_base_name.encode("utf-8")  # Use full segment name as key
+            key = segment_base_name.encode("utf-8")
             value = zlib.compress(segment_data, level=6)
 
             future = producer.send(conf.KAFKA_TOPIC, key=key, value=value)
             future.get(timeout=conf.KAFKA_TIMEOUT)
 
             logger.info(
-                f"Sent segment {segment_base_name} " f"({len(segment_data) / 1024:.2f} KB)"
+                f"Sent segment {segment_base_name} " f"({len(segment_data) / 1024*1024:.2f} MB)"
             )
 
             processed_segments.add(segment_base_name)
-            # os.remove(segment_path)
+            os.remove(segment_path)
 
         time.sleep(0.1)
 
