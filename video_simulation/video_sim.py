@@ -52,8 +52,6 @@ def process_video_data():
             processed_segments.add(segment_base_name)
             os.remove(segment_path)
 
-        time.sleep(0.1)
-
 
 if __name__ == "__main__":
     process_video_data()
