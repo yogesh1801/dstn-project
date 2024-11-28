@@ -20,7 +20,7 @@ public class KafkaApp {
 
     public static class SegmentWriter implements MapFunction<Tuple2<String, byte[]>, Tuple2<String, byte[]>> {
         private final String outputDir;
-        private static final int BUFFER_SIZE = 8192;
+        private static final int BUFFER_SIZE = 5242880;
         
         public SegmentWriter(String outputDir) {
             this.outputDir = outputDir;
