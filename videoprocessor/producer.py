@@ -1,9 +1,9 @@
 import os
 import threading
-from confluent_kafka import Producer
+from kafka import KafkaProducer
 import time
 import logging
-from config import KAFKA_CONFIG, FOLDER_TOPIC_MAPPING  # Import the config
+from config import KAFKA_CONFIG, FOLDER_TOPIC_MAPPING, INPUT_DIR  # Import the config
 
 # Set up logger
 logging.basicConfig(level=logging.INFO,  # Set the logging level
@@ -15,15 +15,22 @@ logging.basicConfig(level=logging.INFO,  # Set the logging level
 logger = logging.getLogger()
 
 # Create a Kafka producer instance using the config from config.py
-producer = Producer(KAFKA_CONFIG)
+producer = KafkaProducer(
+    bootstrap_servers=KAFKA_CONFIG['bootstrap.servers'],
+    client_id=KAFKA_CONFIG['client.id'],
+    key_serializer=lambda x: x.encode('utf-8'),  # Serialize key as UTF-8 string
+    value_serializer=lambda x: x  # The video data is already in bytes
+)
 
 # Function to read files from the folder and publish them to the appropriate Kafka topic
 def publish_video_segment(folder, topic):
     try:
         logger.info(f"Starting to publish video segments from folder: {folder} to topic: {topic}")
-        for filename in os.listdir(folder):
+        folder_path = os.path.join(INPUT_DIR, folder)
+        
+        for filename in os.listdir(folder_path):
             if filename.endswith('.ts'):
-                file_path = os.path.join(folder, filename)
+                file_path = os.path.join(folder_path, filename)
                 
                 # Extract key as the name of the segment without the .ts extension
                 segment_name = os.path.splitext(filename)[0]
@@ -33,34 +40,24 @@ def publish_video_segment(folder, topic):
                     video_data = file.read()
                     
                     # Publish to Kafka with the segment name as the key
-                    producer.produce(
-                        topic=topic,
+                    producer.send(
+                        topic,
                         key=segment_name,
-                        value=video_data,
-                        callback=delivery_report
+                        value=video_data
                     )
                     logger.info(f"Published {filename} to topic {topic} with key {segment_name}")
                 
-                # Poll the producer to deliver messages
-                producer.poll(0)
-                
-                time.sleep(1)  # Simulate a delay between publishing chunks
+                # Simulate a delay between publishing chunks
+                time.sleep(1)  
     except Exception as e:
         logger.error(f"Error while publishing from folder {folder}: {e}")
-
-# Delivery report callback
-def delivery_report(err, msg):
-    if err is not None:
-        logger.error(f"Message delivery failed: {err}")
-    else:
-        logger.info(f"Message delivered to {msg.topic()} [{msg.partition()}]")
 
 # Multithreading to handle each folder-topic pair
 def start_publishers():
     threads = []
     
     for folder, topic in FOLDER_TOPIC_MAPPING.items():  # Use config for folders and topics
-        if os.path.exists(folder):
+        if os.path.exists(os.path.join(INPUT_DIR, folder)):
             # Create and start a new thread for each folder-topic pair
             logger.info(f"Starting thread for folder: {folder}, topic: {topic}")
             thread = threading.Thread(target=publish_video_segment, args=(folder, topic))
@@ -79,6 +76,6 @@ if __name__ == '__main__':
     # Start publishing video segments to Kafka
     start_publishers()
     
-    # Flush any remaining messages in the producer
-    producer.flush()
-    logger.info("Producer flush completed.")
+    # Close the producer connection
+    producer.close()
+    logger.info("Producer closed.")
