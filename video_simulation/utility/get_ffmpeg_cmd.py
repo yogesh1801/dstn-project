@@ -3,7 +3,7 @@ from config import conf
 def get_ffmpeg_cmd(input_source, stream_id):
     input_format = conf.INPUT_FORMAT
     framerate = conf.FRAMERATE
-    segment_duration = 4  # Fixed to 4 seconds
+    segment_duration = conf.SEGMENT_DURATION
     resolution = conf.RESOLUTION
     output_dir = conf.OUTPUT_DIR
     
