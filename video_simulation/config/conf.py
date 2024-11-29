@@ -5,28 +5,10 @@ OUTPUT_DIR = "temp"
 
 # ------------------------------FFMPEG CONFIG----------------------------------#
 
-SEGMENT_DURATION = 4
+SEGMENT_DURATION = 4 #seconds
 INPUT_FORMAT = "None"
 FRAMERATE = 30
 RESOLUTION = "1920x1080"
-
-# -----------------------------KAFKA PRODUCER CONFIG--------------------------#
-
-KAFKA_BROKER = "localhost:9092"  # Replace with your Kafka broker address
-KAFKA_TOPIC = "raw-video-data"  # Replace with your Kafka topic name
-KAFKA_TIMEOUT = 10
-
-# -----------------------------GENERAL CONFIG--------------------------------#
-
-INPUT_VIDEO_SOURCE = "assets/video.mkv"
-OUTPUT_DIR = "temp"
-
-# ------------------------------FFMPEG CONFIG----------------------------------#
-
-SEGMENT_DURATION = 5
-INPUT_FORMAT = "None"
-FRAMERATE = 30
-RESOLUTION = "1280x720"
 
 # -----------------------------KAFKA PRODUCER CONFIG--------------------------#
 
