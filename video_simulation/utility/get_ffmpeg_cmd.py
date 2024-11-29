@@ -1,17 +1,16 @@
 from config import conf
 
-
 def get_ffmpeg_cmd(input_source, stream_id):
     input_format = conf.INPUT_FORMAT
     framerate = conf.FRAMERATE
-    segment_duration = conf.SEGMENT_DURATION
+    segment_duration = 4  # Fixed to 4 seconds
     resolution = conf.RESOLUTION
     output_dir = conf.OUTPUT_DIR
-
+    
     if input_format == "v4l2":
         command = [
             "ffmpeg",
-            "-threads",
+            "-threads", 
             "0",
             "-f",
             "v4l2",
@@ -38,35 +37,35 @@ def get_ffmpeg_cmd(input_source, stream_id):
             "-g",
             str(framerate * 2),
             "-f",
-            "segment",
-            "-segment_time",
+            "hls",
+            "-hls_time",
             str(segment_duration),
-            "-segment_format",
+            "-hls_list_size",
+            "0",                    # Keep all segments in playlist
+            "-hls_segment_type",
             "mpegts",
-            "-segment_wrap",
-            "24",
-            "-reset_timestamps",
-            "1",
-            f"{output_dir}/segment_%d.ts",
+            "-hls_segment_filename",
+            f"{output_dir}/segment_{stream_id}_%d.ts",
+            f"{output_dir}/playlist.m3u8",
         ]
     else:
         command = [
             "ffmpeg",
-            "-threads",
+            "-threads", 
             "0",
             "-i",
             input_source,
             "-map",
-            "0:v:0",  # Ensure we're getting the video stream
+            "0:v:0",
             "-c:v",
-            "libx264",  # Use H.264 codec
+            "libx264",
             "-preset",
-            "ultrafast",  # Fastest encoding
-            "-copyts",  # Copy timestamps for accurate splitting
+            "ultrafast",
+            "-copyts",
             "-avoid_negative_ts",
-            "make_zero",  # Avoid negative timestamps
+            "make_zero",
             "-max_muxing_queue_size",
-            "1024",  # Increase muxing queue for large file
+            "1024",
             "-tune",
             "zerolatency",
             "-profile:v",
@@ -78,14 +77,16 @@ def get_ffmpeg_cmd(input_source, stream_id):
             "-g",
             str(framerate * 2),
             "-f",
-            "segment",
-            "-segment_time",
-            str(segment_duration),  # 4 second segments
-            "-segment_format",
+            "hls",
+            "-hls_time",
+            str(segment_duration),
+            "-hls_list_size",
+            "0",                    # Keep all segments in playlist
+            "-hls_segment_type",
             "mpegts",
-            "-reset_timestamps",
-            "1",  # Reset timestamps at start of each segment
+            "-hls_segment_filename",
             f"{output_dir}/segment_{stream_id}_%d.ts",
+            f"{output_dir}/playlist.m3u8",
         ]
-
+    
     return command
