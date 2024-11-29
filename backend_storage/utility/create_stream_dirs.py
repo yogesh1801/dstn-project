@@ -15,6 +15,6 @@ def create_stream_dirs(stream_id):
 
     for quality in qualities:
         with open(os.path.join(metadata_path, quality, f'{quality}.m3u8'), 'w') as f:
-            f.write("#EXTM3U\n#EXT-X-VERSION:3\n#EXT-X-TARGETDURATION:4 \n#EXT-X-MEDIA-SEQUENCE:0")
+            f.write("#EXTM3U\n#EXT-X-VERSION:3\n#EXT-X-TARGETDURATION:7 \n#EXT-X-MEDIA-SEQUENCE:0")
 
 
