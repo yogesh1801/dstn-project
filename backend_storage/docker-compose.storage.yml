@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  video-storage-vm-0:
+    image: ubuntu:latest
+    volumes:
+      - /data/raid_vm_0:/mnt/storage
+    command: tail -f /dev/null
+
+  video-storage-vm-1:
+    image: ubuntu:latest
+    volumes:
+      - /data/raid_vm_1:/mnt/storage
+    command: tail -f /dev/null
+
+  video-storage-vm-2:
+    image: ubuntu:latest
+    volumes:
+      - /data/raid_vm_2:/mnt/storage
+    command: tail -f /dev/null
