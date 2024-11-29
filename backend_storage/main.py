@@ -3,6 +3,7 @@ from config import conf
 from utility.create_base_dirs import create_base_dirs
 from utility.create_stream_dirs import create_stream_dirs
 from docker import DockerClient
+from utility.get_docker_client import get_docker_client
 
 # Adjusted imports for RAIDManager, VideoChunkManager, KafkaVideoConsumer, FaultToleranceManager
 from backend_storage.raid_manager import RAIDManager
