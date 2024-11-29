@@ -1,7 +1,7 @@
 from config import conf
 import os
 
-def create_base_dir():
+def create_base_dirs():
     base_dir = conf.BASE_DIR
     directories = conf.DIRECTORIES
 
