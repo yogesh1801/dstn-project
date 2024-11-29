@@ -1,16 +1,17 @@
 from config import conf
 
+
 def get_ffmpeg_cmd(input_source, stream_id):
     input_format = conf.INPUT_FORMAT
     framerate = conf.FRAMERATE
     segment_duration = conf.SEGMENT_DURATION
     resolution = conf.RESOLUTION
     output_dir = conf.OUTPUT_DIR
-    
+
     if input_format == "v4l2":
         command = [
             "ffmpeg",
-            "-threads", 
+            "-threads",
             "0",
             "-f",
             "v4l2",
@@ -41,7 +42,7 @@ def get_ffmpeg_cmd(input_source, stream_id):
             "-hls_time",
             str(segment_duration),
             "-hls_list_size",
-            "0",                    # Keep all segments in playlist
+            "0",  # Keep all segments in playlist
             "-hls_segment_type",
             "mpegts",
             "-hls_segment_filename",
@@ -51,7 +52,7 @@ def get_ffmpeg_cmd(input_source, stream_id):
     else:
         command = [
             "ffmpeg",
-            "-threads", 
+            "-threads",
             "0",
             "-i",
             input_source,
@@ -81,12 +82,12 @@ def get_ffmpeg_cmd(input_source, stream_id):
             "-hls_time",
             str(segment_duration),
             "-hls_list_size",
-            "0",                    # Keep all segments in playlist
+            "0",  # Keep all segments in playlist
             "-hls_segment_type",
             "mpegts",
             "-hls_segment_filename",
             f"{output_dir}/segment_{stream_id}_%d.ts",
             f"{output_dir}/playlist.m3u8",
         ]
-    
+
     return command

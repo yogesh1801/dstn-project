@@ -2,6 +2,7 @@ from config import conf
 import os
 import shutil
 
+
 def create_base_dirs():
     base_dir = conf.BASE_DIR
     shutil.rmtree(base_dir, ignore_errors=True)

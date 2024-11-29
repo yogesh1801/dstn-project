@@ -1,6 +1,7 @@
 import time
 from threading import Thread
 
+
 class FaultToleranceManager:
     def __init__(self, raid_manager):
         self.raid_manager = raid_manager
@@ -13,31 +14,23 @@ class FaultToleranceManager:
         """
         print(f"Handling failure for VM: {failed_vm.name}")
 
-        # Remove failed VM
         failed_vm.remove(force=True)
-
-        # Recreate VM
         new_vm = self.raid_manager.docker_client.containers.run(
             "ubuntu:latest",
-            name=f"video-storage-vm-recovery",
-            volumes={
-                f"/data/raid_vm_recovery": {"bind": "/mnt/storage", "mode": "rw"}
-            },
+            name="video-storage-vm-recovery",
+            volumes={"/data/raid_vm_recovery": {"bind": "/mnt/storage", "mode": "rw"}},
             detach=True,
             command="tail -f /dev/null",
         )
-
-        # Sync data from surviving VMs
-        surviving_vms = [vm for vm in self.raid_manager.vms if vm.id != failed_vm.id]
+        # surviving_vms = [vm for vm in self.raid_manager.vms if vm.id != failed_vm.id]
         self.raid_manager.sync_data("/mnt/storage", [new_vm])
-
-        # Add new VM to the list
         self.raid_manager.vms.append(new_vm)
         print(f"Recovered VM: {new_vm.name}")
 
+
 class FaultToleranceMonitor(Thread):
     def __init__(self, raid_manager, fault_tolerance_manager, interval=10):
-        super().__init__(daemon=True)  # Run as a daemon thread
+        super().__init__(daemon=True)
         self.raid_manager = raid_manager
         self.fault_tolerance_manager = fault_tolerance_manager
         self.interval = interval
@@ -47,7 +40,7 @@ class FaultToleranceMonitor(Thread):
         try:
             while True:
                 for vm in self.raid_manager.vms:
-                    vm.reload()  # Refresh VM state
+                    vm.reload()
                     if vm.status != "running":
                         print(f"Detected failure in VM: {vm.name}")
                         self.fault_tolerance_manager.handle_vm_failure(vm)
