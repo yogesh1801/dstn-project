@@ -1,1 +1,1 @@
-INPUT_DIR="1080p"
+INPUT_DIR = "input"

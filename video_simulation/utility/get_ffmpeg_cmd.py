@@ -1,16 +1,17 @@
 from config import conf
 
+
 def get_ffmpeg_cmd(input_source, stream_id):
     input_format = conf.INPUT_FORMAT
     framerate = conf.FRAMERATE
     segment_duration = conf.SEGMENT_DURATION
     resolution = conf.RESOLUTION
     output_dir = conf.OUTPUT_DIR
-    
+
     if input_format == "v4l2":
         command = [
             "ffmpeg",
-            "-threads", 
+            "-threads",
             "0",
             "-f",
             "v4l2",
@@ -51,21 +52,21 @@ def get_ffmpeg_cmd(input_source, stream_id):
     else:
         command = [
             "ffmpeg",
-            "-threads", 
+            "-threads",
             "0",
             "-i",
             input_source,
             "-map",
-            "0:v:0",          # Ensure we're getting the video stream
+            "0:v:0",  # Ensure we're getting the video stream
             "-c:v",
-            "libx264",        # Use H.264 codec
+            "libx264",  # Use H.264 codec
             "-preset",
-            "ultrafast",      # Fastest encoding
-            "-copyts",        # Copy timestamps for accurate splitting
+            "ultrafast",  # Fastest encoding
+            "-copyts",  # Copy timestamps for accurate splitting
             "-avoid_negative_ts",
-            "make_zero",      # Avoid negative timestamps
+            "make_zero",  # Avoid negative timestamps
             "-max_muxing_queue_size",
-            "1024",          # Increase muxing queue for large file
+            "1024",  # Increase muxing queue for large file
             "-tune",
             "zerolatency",
             "-profile:v",
@@ -83,8 +84,8 @@ def get_ffmpeg_cmd(input_source, stream_id):
             "-segment_format",
             "mpegts",
             "-reset_timestamps",
-            "1",            # Reset timestamps at start of each segment
+            "1",  # Reset timestamps at start of each segment
             f"{output_dir}/segment_{stream_id}_%d.ts",
         ]
-    
+
     return command
