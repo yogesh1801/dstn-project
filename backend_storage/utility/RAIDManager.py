@@ -36,12 +36,11 @@ class RAIDManager:
         """
         self.logger.info(f"Creating {self.num_vms} RAID VMs...")
         try:
-            # Clean up any existing VMs first
             self._cleanup_existing_vms()
             
             for i in range(self.num_vms):
                 vm_data_path = os.path.join(os.getcwd(), f"storage/raid_vm_{i}")
-                os.makedirs(vm_data_path, exist_ok=True)  # Ensure storage directory exists
+                os.makedirs(vm_data_path, exist_ok=True) 
                 
                 self.logger.debug(f"Creating VM {i} with data path {vm_data_path}")
                 
@@ -143,11 +142,9 @@ class RAIDManager:
                 source_vm.exec_run(f"mkdir -p {os.path.dirname(source_path)}")
                 dest_vm.exec_run(f"mkdir -p {os.path.dirname(source_path)}")
 
-                # Sync data using tar pipe
-                result = source_vm.exec_run(
-                    f"tar -czvf - -C {source_path} . | docker exec -i {dest_vm.name} tar -xzvf - -C {source_path}",
-                    user="root"
-                )
+                source_cmd = f"tar -czf - -C {source_path} ."
+                dest_cmd = f"docker exec -i {dest_vm.name} tar -xzf - -C {source_path}"
+                result = source_vm.exec_run(f"{source_cmd} | {dest_cmd}", user="root")
 
                 if result.exit_code != 0:
                     raise Exception(f"Sync failed with exit code {result.exit_code}: {result.output}")

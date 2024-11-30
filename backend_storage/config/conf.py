@@ -1,6 +1,7 @@
 import os
 
-BASE_DIR = "storage/raid_vm_1"
+PRIMARY_STORAGE_VM_INT=0
+BASE_DIR = f"storage/raid_vm_{PRIMARY_STORAGE_VM_INT}"
 
 DIRECTORIES = {
     "streams": os.path.join(BASE_DIR, "streams"),
@@ -9,5 +10,4 @@ DIRECTORIES = {
 
 NUM_OF_VMS = 3
 
-KAFKA_BROKER = "localhost:9092"
-PRIMARY_STORAGE_VM_INT=0
+KAFKA_BROKER = "192.168.1.137:9092"

@@ -1,8 +1,14 @@
 import threading
 from concurrent.futures import ThreadPoolExecutor
-from .RAIDManager import RAIDManager
-from .FaultManager import FaultToleranceManager
-from .FaultManager import FaultToleranceMonitor
+from utility.create_base_dirs import create_base_dirs
+from utility.create_stream_dirs import create_stream_dirs
+from utility.RAIDManager import RAIDManager
+from utility.FaultManager import FaultToleranceManager
+from utility.FaultManager import FaultToleranceMonitor
+from utility.save_video_segement import save_video_segment
+from utility.update_m3u8_file import update_m3u8_file
+from kafka import KafkaConsumer
+from config import conf
 
 def kafka_consumer(topic, quality):
     consumer = KafkaConsumer(
@@ -47,12 +53,12 @@ def run_quality_consumer(topic, quality):
     kafka_consumer(topic, quality)
 
 def backend_storage():
-    create_base_dirs()
 
-    raid_manager = RAIDManager(sync_interval=300)
+    raid_manager = RAIDManager(sync_interval=100)
     fault_tolerance_manager = FaultToleranceManager(raid_manager)
     
     raid_manager.create_raid_vms()
+    create_base_dirs()
     raid_manager.start_periodic_sync()
 
     monitor_thread = FaultToleranceMonitor(
@@ -74,9 +80,4 @@ def backend_storage():
             executor.submit(run_quality_consumer, topic, quality)
 
 if __name__ == "__main__":
-    try:
-        backend_storage()
-    except KeyboardInterrupt:
-        print("Shutting down backend storage...")
-    except Exception as e:
-        print(f"Error in backend storage: {e}")
+    backend_storage()
