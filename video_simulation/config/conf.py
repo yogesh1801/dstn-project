@@ -19,7 +19,6 @@ KAFKA_TIMEOUT = 10
 KAFKA_PRODUCER_CONFIG = {
     "bootstrap_servers": [KAFKA_BROKER],
     "acks": "all",  # Good for ensuring delivery reliability
-    "linger_ms": 3,  # Increased from 3 to 10 for better batching
     "batch_size": 8388608,  # Optimized for 4MB segments (4 * 1024 * 1024)
     "retries": 5,  # Good setting for reliability
     "max_request_size": 20971520,  # Set to 5MB (slightly larger than segment size)

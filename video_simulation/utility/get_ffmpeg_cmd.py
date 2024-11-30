@@ -53,7 +53,7 @@ def get_ffmpeg_cmd(input_source, stream_id):
         command = [
             "ffmpeg",
             "-threads",
-            "0",
+            "2",
             "-i",
             input_source,
             "-map",
@@ -61,7 +61,7 @@ def get_ffmpeg_cmd(input_source, stream_id):
             "-c:v",
             "libx264",
             "-preset",
-            "ultrafast",
+            "superfast",
             "-copyts",
             "-avoid_negative_ts",
             "make_zero",

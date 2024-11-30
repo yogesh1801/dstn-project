@@ -33,7 +33,6 @@ def process_video_data():
     processed_segments = set()
     
     while running:
-        # Filter .ts files and sort by the embedded integer
         segments = sorted(
             [seg for seg in os.listdir(temp_dir) if seg.endswith('.ts')],
             key=extract_segment_number
