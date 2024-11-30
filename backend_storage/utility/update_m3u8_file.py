@@ -9,4 +9,4 @@ def update_m3u8_file(stream_id, quality, filename):
     )
 
     with open(playlist_path, "a") as f:
-        f.write(f"#EXTINF:7.20000,\n{quality}/{filename}\n")
+        f.write(f"#EXTINF:7.20000,\n{filename}\n")
