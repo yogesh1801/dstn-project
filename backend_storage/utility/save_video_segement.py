@@ -8,10 +8,10 @@ def save_video_segment(stream_id, quality, segment_data, segment_number):
 
     stream_path = os.path.join(directories["streams"], f"stream_{stream_id}")
 
-    if os.path.exists(stream_path):
+    if not os.path.exists(stream_path):
         create_stream_dirs(stream_id=stream_id)
 
-    filename = f"segment_{segment_number}"
+    filename = f"segment_{segment_number}.ts"
 
     segment_path = os.path.join(stream_path, quality, filename)
     with open(segment_path, "wb") as f:
